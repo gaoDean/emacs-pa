@@ -1,0 +1,3 @@
+#+title: emacs-pa
+
+A minimal interface to [[https://github.com/biox/pa][pa]] in emacs.
