@@ -1,4 +1,4 @@
-;;; emacs-pa.el --- A simple password manager -mode -*- lexical-binding: t -*-
+;;; emacs-pa.el --- A simple password manager -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2023 Dean Gao - MIT License
 ;; Author: Dean Gao <gao.dean@hotmail.com>
