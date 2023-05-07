@@ -61,7 +61,11 @@ Stored in ~/.local/share/pa/passwords to be compatible with biox/pa"
                      (if (not (y-or-n-p "Generate a password?"))
                          (pa--read-two-passwords)
                        (pa--generate-password))))
-  (when (and site account)
+  (when (and site
+             (not (string-match-p ":" site))
+             (not (string-match-p ":" account))
+             (not (string-match-p "\\s-" site))
+             (not (string-match-p "\\s-" account)))
     (if password
         (progn (shell-command (concat "age --encrypt -R ~/.local/share/pa/recipients -o "
                                       "~/.local/share/pa/passwords/"
