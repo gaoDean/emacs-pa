@@ -108,21 +108,21 @@ Stored in ~/.local/share/pa/passwords to be compatible with biox/pa"
    (max 0 (- (window-width) (length str1) (length str2)))
    ?\s))
 
-(defun pa--padding-func-2 (str1 _str2)
+(defun pa--padding-func-2 (str1 alist)
   "Relative left-align"
   (make-string
-   (+ 3 (- max-candidate-length (length str1)))
-   ?\s))
+   (+ 3 (- (apply #'max (mapcar (lambda (pair) (length (car pair))) alist))
+           (length str1)))
+  ?\s))
 
 (defun pa--get-account (prompt alist)
   "Complete right-align"
-  (let* ((max-candidate-length
-          (apply #'max (mapcar (lambda (pair) (length (car pair))) alist)))
-         (padded-alist
+  (let* ((padded-alist
           (mapcar (lambda (pair)
                     (let* ((candidate (car pair))
                            (counterpart (cdr pair))
                            (padding (pa--padding-func-1 candidate counterpart)))
+                           ;; (padding (pa--padding-func-2 candidate alist)))
                       (cons (concat candidate padding counterpart) candidate)))
                   alist))
          (result (string-split (completing-read prompt padded-alist) "\s+")))
@@ -190,8 +190,9 @@ Stored in ~/.local/share/pa/passwords to be compatible with biox/pa"
                                                                   " <"
                                                                   new-account
                                                                   ">?")))
-      (rename-file (concat "~/.local/share/pa/passwords/" site ":" account ".age")
-                   (concat "~/.local/share/pa/passwords/" new-site ":" new-account ".age"))
+      (progn (rename-file (concat "~/.local/share/pa/passwords/" site ":" account ".age")
+                          (concat "~/.local/share/pa/passwords/" new-site ":" new-account ".age"))
+             (message "Done"))
     (message "Aborted")))
 
 (provide 'emacs-pa)
